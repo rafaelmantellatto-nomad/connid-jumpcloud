@@ -9,15 +9,16 @@ import com.jumpcloud.api.JumpCloudApi;
 import com.jumpcloud.api.JumpCloudApiImpl;
 import com.jumpcloud.util.JumpCloudFilter;
 import com.jumpcloud.util.JumpCloudFilterTranslator;
-import org.identityconnectors.framework.spi.FilterTranslator;
 import org.identityconnectors.framework.spi.SearchResultsHandler;
 import org.identityconnectors.framework.common.exceptions.ConnectorException;
 import org.identityconnectors.framework.common.objects.filter.Filter;
+import org.identityconnectors.framework.common.objects.Uid;
+import org.identityconnectors.framework.common.objects.Name;
 
 import java.util.Set;
 
 @ConnectorClass(configurationClass = JumpCloudConfiguration.class, displayNameKey = "JumpCloudConnector.Connector.displayName")
-public class JumpCloudConnector implements Connector, SchemaOp{
+public class JumpCloudConnector implements Connector, SchemaOp, SearchOp{
 
     private static final Logger LOG = LoggerFactory.getLogger(JumpCloudConnector.class);
     private JumpCloudConfiguration configuration;
@@ -43,7 +44,6 @@ public class JumpCloudConnector implements Connector, SchemaOp{
 
      @Override
     public void search(ObjectClass objectClass, Filter query, SearchResultsHandler handler, OperationOptions options) {
-
         if (objectClass.equals(ObjectClass.ACCOUNT)) {
             JumpCloudFilterTranslator filterTranslator = new JumpCloudFilterTranslator();
             JumpCloudFilter filter = filterTranslator.translate(query);
@@ -70,8 +70,8 @@ public class JumpCloudConnector implements Connector, SchemaOp{
     }
 
     @Override
-    public FilterTranslator<JumpCloudFilter> createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
-        return new JumpCloudFilterTranslator();
+    public FilterTranslator createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
+        return null;
     }
 
     @Override

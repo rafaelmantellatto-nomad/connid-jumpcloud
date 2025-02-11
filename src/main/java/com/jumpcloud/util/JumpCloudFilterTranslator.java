@@ -3,7 +3,6 @@ package com.jumpcloud.util;
 import org.identityconnectors.framework.common.objects.Attribute;
 import org.identityconnectors.framework.common.objects.filter.EqualsFilter;
 import org.identityconnectors.framework.common.objects.filter.Filter;
-import org.identityconnectors.framework.spi.FilterTranslator;
 import org.identityconnectors.framework.common.objects.Uid;
 import org.identityconnectors.framework.common.objects.Name;
 import org.identityconnectors.framework.common.objects.filter.*;
@@ -15,7 +14,7 @@ public class JumpCloudFilterTranslator {
             EqualsFilter equalsFilter = (EqualsFilter) filter;
             Attribute attribute = equalsFilter.getAttribute();
             return new JumpCloudFilter(attribute.getName(), attribute.getValue().get(0));
-         } else if (filter instanceof Uid.Equals) {
+        } else if (filter instanceof Uid.Equals) {
             Uid.Equals equalsFilter = (Uid.Equals) filter;
             return new JumpCloudFilter(Uid.NAME, equalsFilter.getUidValue());
         } else if (filter instanceof Name.Equals) {

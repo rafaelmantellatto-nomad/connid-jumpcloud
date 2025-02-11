@@ -8,5 +8,5 @@ import org.identityconnectors.framework.spi.SearchResultsHandler;
 import java.util.Set;
 
 public interface JumpCloudApi {
-    void searchUsers(JumpCloudFilter filter, SearchResultsHandler resultsHandler, OperationOptions options);
+    void searchUsers(JumpCloudFilter filter, SearchResultsHandler resultsHandler, OperationOptions options); // Mudança aqui
 }
