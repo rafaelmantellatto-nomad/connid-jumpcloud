@@ -9,16 +9,15 @@ import com.jumpcloud.api.JumpCloudApi;
 import com.jumpcloud.api.JumpCloudApiImpl;
 import com.jumpcloud.util.JumpCloudFilter;
 import com.jumpcloud.util.JumpCloudFilterTranslator;
+import org.identityconnectors.framework.spi.FilterTranslator;
 import org.identityconnectors.framework.spi.SearchResultsHandler;
 import org.identityconnectors.framework.common.exceptions.ConnectorException;
 import org.identityconnectors.framework.common.objects.filter.Filter;
-import org.identityconnectors.framework.common.objects.Uid;
-import org.identityconnectors.framework.common.objects.Name;
 
 import java.util.Set;
 
 @ConnectorClass(configurationClass = JumpCloudConfiguration.class, displayNameKey = "JumpCloudConnector.Connector.displayName")
-public class JumpCloudConnector implements Connector, SchemaOp, SearchOp{
+public class JumpCloudConnector implements Connector, SchemaOp, SearchOp<JumpCloudFilter> {
 
     private static final Logger LOG = LoggerFactory.getLogger(JumpCloudConnector.class);
     private JumpCloudConfiguration configuration;
@@ -44,9 +43,10 @@ public class JumpCloudConnector implements Connector, SchemaOp, SearchOp{
 
      @Override
     public void search(ObjectClass objectClass, Filter query, SearchResultsHandler handler, OperationOptions options) {
+        JumpCloudFilterTranslator filterTranslator = new JumpCloudFilterTranslator();
+        JumpCloudFilter filter = filterTranslator.translate(query);
+
         if (objectClass.equals(ObjectClass.ACCOUNT)) {
-            JumpCloudFilterTranslator filterTranslator = new JumpCloudFilterTranslator();
-            JumpCloudFilter filter = filterTranslator.translate(query);
             // Implemente a lógica para pesquisar usuários usando a API do JumpCloud
             jumpCloudApi.searchUsers(filter, handler, options);
         } else {
@@ -70,8 +70,8 @@ public class JumpCloudConnector implements Connector, SchemaOp, SearchOp{
     }
 
     @Override
-    public FilterTranslator createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
-        return null;
+    public FilterTranslator<JumpCloudFilter> createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
+        return new JumpCloudFilterTranslator();
     }
 
     @Override
