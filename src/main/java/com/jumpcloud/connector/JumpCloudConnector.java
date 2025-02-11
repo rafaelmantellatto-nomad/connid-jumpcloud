@@ -39,14 +39,15 @@ public class JumpCloudConnector implements Connector, SchemaOp, SearchOp {
         LOG.info("JumpCloud Connector disposed.");
     }
 
-    @Override
-    public void search(ObjectClass objectClass, Filter filter, SearchResultsHandler handler, OperationOptions options) {
-        LOG.info("Filter {}", filter);
-        JumpCloudFilter jcFilter = translateFilter(filter);
-        LOG.info("Filter {}", jcFilter);
+     @Override
+    public void search(ObjectClass objectClass, Filter query, SearchResultsHandler handler, OperationOptions options) {
+       /* JumpCloudFilterTranslator filterTranslator = new JumpCloudFilterTranslator();
+        JumpCloudFilter filter = filterTranslator.translate(query);*/
+       JumpCloudFilter filter = null;
+
         if (objectClass.equals(ObjectClass.ACCOUNT)) {
             // Implemente a lógica para pesquisar usuários usando a API do JumpCloud
-            jumpCloudApi.searchUsers(jcFilter, handler, options);
+            jumpCloudApi.searchUsers(filter, handler, options);
         } else {
             throw new UnsupportedOperationException("Unsupported object class: " + objectClass.getObjectClassValue());
         }
@@ -67,19 +68,12 @@ public class JumpCloudConnector implements Connector, SchemaOp, SearchOp {
         return schemaBuilder.build();
     }
 
-    private JumpCloudFilter translateFilter(Filter filter) {
-        JumpCloudFilterTranslator trans = new JumpCloudFilterTranslator();
-        JumpCloudFilter jcFilter = trans.translate(filter);
-        return jcFilter;
+   public FilterTranslator<JumpCloudFilter> createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
+        return new JumpCloudFilterTranslator();
     }
 
     @Override
-    public FilterTranslator<JumpCloudFilter> createFilterTranslator(ObjectClass objectClass, OperationOptions options) {
-        return new JumpCloudFilterTranslator();
-    }
-    
-    @Override
-    public void executeQuery(ObjectClass objectClass, JumpCloudFilter filter, ResultsHandler resultsHandler, OperationOptions options) {
+    public void executeQuery(ObjectClass objectClass, Object filter, ResultsHandler resultsHandler, OperationOptions options) {
         // Implemente este método ou lance uma exceção UnsupportedOperationException
         throw new UnsupportedOperationException("executeQuery is not supported");
     }
