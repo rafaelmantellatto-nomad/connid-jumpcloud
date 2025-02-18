@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jumpcloud.connector.JumpCloudConfiguration;
 import com.jumpcloud.util.JumpCloudFilter;
-
 import org.apache.http.client.methods.*;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.identityconnectors.framework.common.objects.*;
@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import org.identityconnectors.framework.spi.SearchResultsHandler;
 
 public class JumpCloudApiImpl implements JumpCloudApi {
@@ -26,7 +28,42 @@ public class JumpCloudApiImpl implements JumpCloudApi {
         this.configuration = configuration;
     }
 
+    @Override
+    public String createUser(Set<Attribute> attributes) {
+        // Implemente a lógica para criar um usuário usando a API do JumpCloud
+        // Use a API Key da configuração: configuration.getApiKey()
+        // Use o URL da API da configuração: configuration.getApiURL()
+        // Consulte a documentação da API do JumpCloud para obter detalhes sobre como criar usuários
+        return null; // Retorne o ID do usuário criado
+    }
+
+    @Override
+    public void updateUser(String userId, Set<Attribute> attributes) {
+        // Implemente a lógica para atualizar um usuário usando a API do JumpCloud
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        // Implemente a lógica para deletar um usuário usando a API do JumpCloud
+    }
+
      @Override
+    public String createGroup(Set<Attribute> attributes) {
+        // Implemente a lógica para criar um grupo usando a API do JumpCloud
+        return null; // Retorne o ID do grupo criado
+    }
+
+    @Override
+    public void updateGroup(String groupId, Set<Attribute> attributes) {
+        // Implemente a lógica para atualizar um grupo usando a API do JumpCloud
+    }
+
+    @Override
+    public void deleteGroup(String groupId) {
+        // Implemente a lógica para deletar um grupo usando a API do JumpCloud
+    }
+
+    @Override
     public void searchUsers(JumpCloudFilter filter, SearchResultsHandler resultsHandler, OperationOptions options) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(configuration.getApiURL() + "/users");
